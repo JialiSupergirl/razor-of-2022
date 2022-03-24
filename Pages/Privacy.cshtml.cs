@@ -6,7 +6,7 @@ namespace razor_of_2022.Pages;
 public class PrivacyModel : PageModel
 {
     public string Message { get; private set; } = "Message!";
-    public string Greeting { get; private set; }
+    public string? Greeting { get; private set; }
     private readonly ILogger<PrivacyModel> _logger;
 
     public PrivacyModel(ILogger<PrivacyModel> logger)
