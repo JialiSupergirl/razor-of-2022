@@ -19,11 +19,11 @@ namespace razor_of_2022.Pages.Games
             _context = context;
         }
 
-        public IList<Game> Game { get;set; }
+        public IList<Game> Games { get; set; }
 
         public async Task OnGetAsync()
         {
-            Game = await _context.Game.ToListAsync();
+            Games = await _context.Game.ToListAsync();
         }
     }
 }
