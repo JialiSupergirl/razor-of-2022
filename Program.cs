@@ -1,7 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<StoreGameContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("StoreGameContext")));
 
 var app = builder.Build();
 
