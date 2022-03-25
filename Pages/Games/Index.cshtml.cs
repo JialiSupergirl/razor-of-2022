@@ -18,6 +18,17 @@ namespace razor_of_2022.Pages.Games
         [BindProperty(SupportsGet = true, Name = "Query")]
         public string Query { get; set; }
 
+        [BindProperty(SupportsGet = true, Name = "PTime")]
+        public string PTime { get; set; }
+
+        [BindProperty(SupportsGet = true, Name = "IsBefore")]
+        public bool IsBefore { get; set; }
+
+        [BindProperty(SupportsGet = true, Name = "IsAfter")]
+        public bool IsAfter { get; set; }
+
+        [BindProperty(SupportsGet = true, Name = "IsFilterByDate")]
+        public bool IsFilterByDate { get; set; }
 
         public IndexModel(StoreGameContext context, ILogger<IndexModel> logger)
         {
@@ -31,12 +42,28 @@ namespace razor_of_2022.Pages.Games
         {
             var games = from g in _context.Game select g;
 
-            if (!string.IsNullOrEmpty(Query))
+            if (!string.IsNullOrEmpty(Query) && !string.IsNullOrEmpty(PTime))
             {
-                games = games.Where(g => g.Title.Contains(Query));
-            }
+                if (IsBefore && !IsFilterByDate && !IsAfter)
+                {
+                    games = games.Where(g => g.Title.ToLower().Contains(Query.ToLower()) &&
+                                            g.DatePublished <= DateTime.Parse(PTime));
+                    // _logger.Log(LogLevel.Information, PTime);
+                    // _logger.Log(LogLevel.Information, Query);
+                }
 
-            _logger.Log(LogLevel.Information, Query);
+                else if (!IsBefore && IsAfter && !IsFilterByDate)
+                {
+                    games = games.Where(g => g.Title.ToLower().Contains(Query.ToLower()) &&
+                                            g.DatePublished >= DateTime.Parse(PTime));
+                }
+
+
+                else if (IsFilterByDate)
+                {
+                    games = games.Where(g => g.Title.ToLower().Contains(Query.ToLower()));
+                }
+            }
             Games = await games.ToListAsync();
         }
     }

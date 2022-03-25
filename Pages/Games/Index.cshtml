@@ -15,6 +15,13 @@
     <p>
         Filter Titles:
         <input type="text" asp-for="Query" />
+    </p>
+    <p>
+        Filter By Date:
+        <input type="date" asp-for="PTime" />
+        <input type="checkbox" asp-for="IsBefore" />Is Before
+        <input type="checkbox" asp-for="IsAfter" />Is After
+        <input type="checkbox" asp-for="IsFilterByDate" />Turn off
         <input type="submit" value="Filter" />
     </p>
 </form>
