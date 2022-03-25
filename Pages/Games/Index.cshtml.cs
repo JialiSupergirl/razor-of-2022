@@ -13,9 +13,15 @@ namespace razor_of_2022.Pages.Games
     public class IndexModel : PageModel
     {
         private readonly StoreGameContext _context;
+        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(StoreGameContext context)
+        [BindProperty(SupportsGet = true, Name = "Query")]
+        public string Query { get; set; }
+
+
+        public IndexModel(StoreGameContext context, ILogger<IndexModel> logger)
         {
+            _logger = logger;
             _context = context;
         }
 
@@ -23,7 +29,15 @@ namespace razor_of_2022.Pages.Games
 
         public async Task OnGetAsync()
         {
-            Games = await _context.Game.ToListAsync();
+            var games = from g in _context.Game select g;
+
+            if (!string.IsNullOrEmpty(Query))
+            {
+                games = games.Where(g => g.Title.Contains(Query));
+            }
+
+            _logger.Log(LogLevel.Information, Query);
+            Games = await games.ToListAsync();
         }
     }
 }

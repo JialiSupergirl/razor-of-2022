@@ -6,7 +6,17 @@
 }
 
 <h1>Details</h1>
+<div>@Model.TheDate</div>
+<div>@Model.QName</div>
 
+<div>@Html.Raw(Model.QueryValues)</div>
+
+<div>
+    @foreach (var routeVal in Request.RouteValues)
+    {
+        <li><span>@routeVal.Key</span>:<span>@routeVal.Value</span></li>
+    }
+</div>
 <div>
     <h4>Game</h4>
     <hr />

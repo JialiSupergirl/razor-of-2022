@@ -13,19 +13,36 @@ namespace razor_of_2022.Pages.Games
     public class DetailsModel : PageModel
     {
         private readonly StoreGameContext _context;
-
-        public DetailsModel(StoreGameContext context)
+        private readonly ILogger _logger;
+        public DetailsModel(ILogger<DetailsModel> logger, StoreGameContext context)
         {
+            _logger = logger;
             _context = context;
         }
 
         public Game Game { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        [BindProperty(Name = "curr_time", SupportsGet = true)]
+
+        public DateTime TheDate { get; set; } = DateTime.MinValue;
+
+        public string QName { get; set; } = "Fred";
+        public string QueryValues { get; set; } = "";
+        public async Task<IActionResult> OnGetAsync(int? id, string q_name)
         {
             if (id == null)
             {
                 return NotFound();
+            }
+            foreach (var qp in Request.Query)
+            {
+                QueryValues += $"<div>{qp.Key} : {qp.Value}</div>";
+            }
+
+            _logger.Log(LogLevel.Information, "useless q_name: " + q_name);
+            if (q_name != null)
+            {
+                QName = q_name;
             }
 
             Game = await _context.Game.FirstOrDefaultAsync(m => m.GameId == id);

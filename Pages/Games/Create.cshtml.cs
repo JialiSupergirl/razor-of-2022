@@ -13,14 +13,16 @@ namespace razor_of_2022.Pages.Games
     public class CreateModel : PageModel
     {
         private readonly StoreGameContext _context;
-
-        public CreateModel(StoreGameContext context)
+        private readonly ILogger _logger;
+        public CreateModel(ILogger<CreateModel> logger, StoreGameContext context)
         {
+            _logger = logger;
             _context = context;
         }
 
         public IActionResult OnGet()
         {
+            _logger.Log(LogLevel.Information, "got create page");
             return Page();
         }
 

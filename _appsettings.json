@@ -7,7 +7,7 @@
   },
   "AllowedHosts": "*",
   "ConnectionStrings": {
-    "StoreGameContext": "server=localhost;user=root;database=games"
+    "StoreGameContext": "connection string"
   },
   "MariaVersion": "10.4.22-maraidb"
 }
